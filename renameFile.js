@@ -9,9 +9,11 @@ const  BUCKET = "eddie-tutorial";
 const FILENAME = "test.txt";
 
 //NOTE- This method of parsing a file name to seperate will not work for "complex" file extensions such as .tar.gz
-let filename = path.parse(FILENAME).name;
-let extension = path.parse(FILENAME).ext;
-let newName = `${filename}_renamed${extension}`;
+function renameFile(originalFileName) {
+    let filename = path.parse(originalFileName).name;
+    let extension = path.parse(originalFileName).ext;
+    return `${filename}_renamed${extension}`;
+}
 
 exports.handler = async function (event, context, callback) {
     
@@ -19,7 +21,7 @@ exports.handler = async function (event, context, callback) {
     await   s3.copyObject({ 
                 CopySource: `${BUCKET}/${FILENAME}`,
                 Bucket: BUCKET, 
-                Key: newName
+                Key: renameFile(FILENAME)
                 }, function(err, data){
                     if (err) {
                         console.log(`Error: ${err}`);
