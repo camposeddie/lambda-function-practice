@@ -9,7 +9,7 @@ const  BUCKET = "eddie-tutorial";
 const FILENAME = "test.txt";
 
 //NOTE- This method of parsing a file name to seperate will not work for "complex" file extensions such as .tar.gz
-function renameFile(originalFileName) {
+function renameFile (originalFileName) {
     let filename = path.parse(originalFileName).name;
     let extension = path.parse(originalFileName).ext;
     return `${filename}_renamed${extension}`;
