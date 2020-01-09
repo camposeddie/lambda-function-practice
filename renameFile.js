@@ -1,19 +1,12 @@
 //dependencies
 const aws = require('aws-sdk');
 const s3 = new aws.S3();
-const path = require('path');
+const renameFile = require('./renameFileScript');
 
 //define S3 bucket name and file name
 //TODO- define filename from url parameter when adapted for API
 const  BUCKET = "eddie-tutorial";
 const FILENAME = "test.txt";
-
-//NOTE- This method of parsing a file name to seperate will not work for "complex" file extensions such as .tar.gz
-function renameFile (originalFileName) {
-    let filename = path.parse(originalFileName).name;
-    let extension = path.parse(originalFileName).ext;
-    return `${filename}_renamed${extension}`;
-}
 
 exports.handler = async function (event, context, callback) {
     
@@ -21,7 +14,7 @@ exports.handler = async function (event, context, callback) {
     await   s3.copyObject({ 
                 CopySource: `${BUCKET}/${FILENAME}`,
                 Bucket: BUCKET, 
-                Key: renameFile(FILENAME)
+                Key: renameFile.handler(FILENAME)
                 }, function(err, data){
                     if (err) {
                         console.log(`Error: ${err}`);
